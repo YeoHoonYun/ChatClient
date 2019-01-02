@@ -1,8 +1,6 @@
 package git.fast.client;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -10,31 +8,39 @@ import java.net.Socket;
  * Github : https://github.com/YeoHoonYun
  */
 public class Client {
-    Socket socket = null;
+    private String ip;
+    private int port;
 
-    public Client(Socket socket) {
-        this.socket = socket;
+    public Client(String ip, int port) {
+        this.ip = ip;
+        this.port = port;
     }
 
     public void connect(){
+        Socket socket = null;
         DataOutputStream out = null;
-        DataInputStream in = null;
-
+        BufferedReader br = null;
         try {
-            in = new DataInputStream(socket.getInputStream());
+            socket = new Socket(ip, port);
+            br = new BufferedReader(new InputStreamReader(System.in));
             out = new DataOutputStream(socket.getOutputStream());
 
+            System.out.println("소켓을 연결합니다.");
 
-        }catch (Exception e){
+            ClientHandler clientHandler = new ClientHandler(socket);
+            clientHandler.start();
 
+            while(true){
+                String string = br.readLine();
+                out.writeUTF(string);
+                out.flush();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }finally {
             try {
-                in.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            try {
-                out.close();
+                socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -42,7 +48,8 @@ public class Client {
     }
 
     public static void main(String[] args) {
-
+        Client client = new Client("localhost", 8000);
+        client.connect();
 
     }
 
