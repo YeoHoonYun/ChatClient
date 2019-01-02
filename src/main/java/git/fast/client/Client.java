@@ -1,8 +1,6 @@
 package git.fast.client;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -18,23 +16,31 @@ public class Client {
 
     public void connect(){
         DataOutputStream out = null;
-        DataInputStream in = null;
+        BufferedReader br= null;
 
         try {
-            in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
+            br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
+            ClientHandler clientHandler = new ClientHandler(socket);
+            clientHandler.start();
+
+            while(true){
+                String text = br.readLine();
+                out.writeUTF(text);
+                out.flush();
+            }
 
         }catch (Exception e){
 
         }finally {
             try {
-                in.close();
+                out.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
             try {
-                out.close();
+                br.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
