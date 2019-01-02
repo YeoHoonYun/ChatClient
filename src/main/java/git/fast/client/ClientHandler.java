@@ -25,6 +25,12 @@ public class ClientHandler extends Thread{
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            try {
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
