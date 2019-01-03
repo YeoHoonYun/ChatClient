@@ -30,10 +30,12 @@ public class Client {
             ClientHandler clientHandler = new ClientHandler(socket);
             clientHandler.start();
 
+            String nickStr = br.readLine();
+            out.writeUTF("/nick "+nickStr);
+            out.flush();
+
             while(true){
                 String string = br.readLine();
-                if(string.equals("/quit"))
-                    return;
                 out.writeUTF(string);
                 out.flush();
             }
