@@ -32,6 +32,8 @@ public class Client {
 
             while(true){
                 String string = br.readLine();
+                if(string.equals("/quit"))
+                    return;
                 out.writeUTF(string);
                 out.flush();
             }
@@ -41,6 +43,11 @@ public class Client {
         }finally {
             try {
                 socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                out.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }

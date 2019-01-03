@@ -24,7 +24,7 @@ public class ClientHandler extends Thread {
                 System.out.println(in.readUTF());
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("접속을 종료합니다.");
         } finally {
             try {
                 in.close();
