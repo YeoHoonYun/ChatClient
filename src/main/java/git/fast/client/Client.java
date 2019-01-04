@@ -3,10 +3,6 @@ package git.fast.client;
 import java.io.*;
 import java.net.Socket;
 
-/**
- * Created by cjswo9207u@gmail.com on 2019-01-02
- * Github : https://github.com/YeoHoonYun
- */
 public class Client {
     private String ip;
     private int port;
